@@ -113,6 +113,7 @@ function Buttons() {
         buttonsForm[i].style.height = "75px"
         buttonsForm[i].style.fontFamily = "liberation-serif"
         buttonsForm[i].style.fontSize = "20px"
+        buttonsForm[i].style.backgroundColor = "#E1EDFF"
     }
     return buttonsForm;
 }
