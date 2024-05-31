@@ -60,6 +60,8 @@ function ResultatZone(){
 function ResultatTxt(a = ""){
     let resultatTxt = document.createElement('div')
     resultatTxt.style.border = "1px solid #E0E0E0";
+    resultatTxt.style.backgroundColor = "white";
+    resultatTxt.style.borderRadius = "5px";
     resultatTxt.innerHTML = a;
     resultatTxt.style.height = "60%";
     resultatTxt.style.textAlign = "Right";
@@ -149,6 +151,7 @@ function Buttons() {
         buttonsForm[i].style.textAlign = "Center"
         buttonsForm[i].style.alignContent = "Center"
         buttonsForm[i].style.border = "1px solid #696969"
+        buttonsForm[i].style.borderRadius = "5px"
         buttonsForm[i].style.width = "75px"
         buttonsForm[i].style.height = "75px"
         buttonsForm[i].style.fontFamily = "liberation-serif"
