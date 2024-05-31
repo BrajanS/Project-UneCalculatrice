@@ -25,18 +25,15 @@
     </div> */}
 
 const body = document.querySelector('body');
-let recupNum = [];
-
+let recupNum = "";
+let calcResultat = null;
+let opAdd = null;
+let opSous = null;
+let opMult = null;
+let opDivi = null;
+let resultUpdate = null;
 
 mainCalc();
-// RecuperateNumber();
-// console.log(RecuperateNumber());
-
-
-// function RecuperateNumber(){
-        
-    
-// }
 
 function mainCalc(){
     let mainZone = document.createElement('div');
@@ -60,16 +57,17 @@ function ResultatZone(){
     return resultatZone;
 }
 
-function ResultatTxt() {
+function ResultatTxt(a = ""){
     let resultatTxt = document.createElement('div')
     resultatTxt.style.border = "1px solid #E0E0E0";
-    resultatTxt.innerHTML = "125+65-987 = -797";
+    resultatTxt.innerHTML = a;
     resultatTxt.style.height = "60%";
     resultatTxt.style.textAlign = "Right";
     resultatTxt.style.alignContent = "Center";
     resultatTxt.style.fontWeight = "Bold";
     resultatTxt.style.fontSize = "34px";
-
+    resultatTxt.style.width = "90%";
+    resultUpdate = resultatTxt; // Sauvegarde de la référence à la zone de résultat
     return resultatTxt;
 }
 console.log("Contenu de la Fonction CalcZone(): ",CalcZone());
@@ -88,7 +86,6 @@ function CalcZone(){
     for(let i=0; i<Buttons().length; i++){
         calcZone.appendChild(Buttons()[i]);
     }
-
     return calcZone;
 }
 
@@ -114,27 +111,37 @@ function Buttons() {
 
     let innerValues = [1,2,3,"+",4,5,6,"-",7,8,9,"*","=",0,"CE","/"]
     let buttonsForm = [one,two,three,addition,four,five,six,soustraction,seven,eight,nine,multiplication,calculatorOP,zero,clear,division];
-    buttonsForm[0].addEventListener('click', function addOne(){recupNum.push(1); return recupNum;});  // Add 1
-    buttonsForm[1].addEventListener('click', function addTwo(){recupNum.push(2); return recupNum;});  // Add 2
-    buttonsForm[2].addEventListener('click', function addThree(){recupNum.push(3); return recupNum;});  // Add 3
-    buttonsForm[4].addEventListener('click', function addFour(){recupNum.push(4); return recupNum;});  // Add 4
-    buttonsForm[5].addEventListener('click', function addFive(){recupNum.push(5); return recupNum;});  // Add 5
-    buttonsForm[6].addEventListener('click', function addSix(){recupNum.push(6); return recupNum;});  // Add 6
-    buttonsForm[8].addEventListener('click', function addSeven(){recupNum.push(7); return recupNum;});  // Add 7
-    buttonsForm[9].addEventListener('click', function addEight(){recupNum.push(8); return recupNum;});  // Add 8
-    buttonsForm[10].addEventListener('click', function addNine(){recupNum.push(9); return recupNum;});  // Add 9
-    buttonsForm[13].addEventListener('click', function addZero(){recupNum.push(0); return recupNum;});  // Add 0
-    // Adds "+" operator
-    buttonsForm[3].addEventListener('click', function operatorAddition(){recupNum.push("+"); return recupNum;});  
-    // Adds "-" operator
-    buttonsForm[7].addEventListener('click', function operatorSoustraction(){recupNum.push("-"); return recupNum;});
-    // Adds "*" operator
-    buttonsForm[11].addEventListener('click', function addZero(){recupNum.push("*"); return recupNum;});
-    // Adds "/" operator
-    buttonsForm[15].addEventListener('click', function addZero(){recupNum.push("/"); return recupNum;});
-
-    // Saves numbers into "recupNum"
-    buttonsForm[12].addEventListener('click', function equalButton(){return recupNum, console.log(recupNum);});
+    buttonsForm[0].addEventListener('click', function addOne(){errorMsgClear(); recupNum += "1"; updater(); return recupNum;});// Adds 1
+    buttonsForm[1].addEventListener('click', function addTwo(){errorMsgClear(); recupNum += "2"; updater(); return recupNum;});    // Adds 2
+    buttonsForm[2].addEventListener('click', function addThree(){errorMsgClear(); recupNum += "3"; updater(); return recupNum;});  // Adds 3
+    buttonsForm[4].addEventListener('click', function addFour(){errorMsgClear(); recupNum += "4"; updater(); return recupNum;});   // Adds 4
+    buttonsForm[5].addEventListener('click', function addFive(){errorMsgClear(); recupNum += "5"; updater(); return recupNum;});   // Adds 5
+    buttonsForm[6].addEventListener('click', function addSix(){errorMsgClear(); recupNum += "6"; updater(); return recupNum;});    // Adds 6
+    buttonsForm[8].addEventListener('click', function addSeven(){errorMsgClear(); recupNum += "7"; updater(); return recupNum;});  // Adds 7
+    buttonsForm[9].addEventListener('click', function addEight(){errorMsgClear(); recupNum += "8"; updater(); return recupNum;});  // Adds 8
+    buttonsForm[10].addEventListener('click', function addNine(){errorMsgClear(); recupNum += "9"; updater(); return recupNum;});  // Adds 9
+    buttonsForm[13].addEventListener('click', function addZero(){errorMsgClear(); recupNum += "0"; updater(); return recupNum;});  // Adds 0
+    buttonsForm[3].addEventListener('click', function operatorAddition(){errorMsgClear(); recupNum += "+"; updater(); return recupNum;});  
+    buttonsForm[7].addEventListener('click', function operatorSoustraction(){errorMsgClear(); recupNum += "-"; updater(); return recupNum;});
+    buttonsForm[11].addEventListener('click', function operatorMultiplication(){errorMsgClear(); recupNum += "*"; updater(); return recupNum;});
+    buttonsForm[15].addEventListener('click', function operatorDivision(){errorMsgClear(); recupNum += "/"; updater(); return recupNum;});
+    buttonsForm[12].addEventListener('click', function equalButton(){
+    errorMsgClear();
+    let result = "";
+    try {
+        if(recupNum !== "" && recupNum !== null){result = eval(recupNum);}
+        else {result = "";}
+        recupNum = result.toString();
+    }
+    catch (error) {
+        recupNum = "Something went wrong";
+    }
+        updater();
+    });
+    buttonsForm[14].addEventListener('click', function clearTxt(){
+        recupNum = "";
+        updater();
+    });
 
     for(let i=0; i<buttonsForm.length; i++){
         buttonsForm[i].style.cursor = "pointer"
@@ -149,4 +156,16 @@ function Buttons() {
         buttonsForm[i].style.backgroundColor = "#E1EDFF"
     }
     return buttonsForm;
+}
+
+function updater(){
+    if(resultUpdate){
+        resultUpdate.innerHTML = recupNum;
+    }
+}
+
+function errorMsgClear(){
+    if (recupNum === "Something went wrong") {
+        recupNum = "";
+    }
 }
